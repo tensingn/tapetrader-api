@@ -1,5 +1,5 @@
 # tapetrader-api
-REST api for tape trader project
+REST API for tape trader project
 
 ### Where to start
 1. View docs.pdf for description and better understanding of API routes.
