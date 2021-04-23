@@ -1,0 +1,1974 @@
+{
+	"info": {
+		"_postman_id": "1b877a5f-f5ce-4bc9-9494-869f6241ffd1",
+		"name": "final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c059534-67ab-4ec3-b4df-7e741bf86e33",
+						"exec": [
+							"pm.environment.set(\"jwt1\", pm.response.json()[\"id_token\"]);\r",
+							"\r",
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"test@test.com\",\n\t\"password\": \"test123!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/login",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "82bb4bd7-1ee8-4412-9e33-94b0ba5d5971",
+						"exec": [
+							"pm.environment.set(\"jwt2\", pm.response.json()[\"id_token\"]);\r",
+							"\r",
+							"pm.test(\"201 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"test2@test.com\",\n\t\"password\": \"test123!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/login",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create merch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "42526f78-f8a2-42a3-bd73-91d5e686cba2",
+						"exec": [
+							"pm.environment.set(\"merch1_id\", pm.response.json()[\"id\"]);\r",
+							"\r",
+							"pm.test(\"201 status code\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"description\"]).to.eq(\"Metallica Shirt\");\r",
+							"    pm.expect(pm.response.json()[\"type\"]).to.eq(\"clothing\");\r",
+							"    pm.expect(pm.response.json()[\"condition\"]).to.eq(\"used\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/merch/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"description\": \"Metallica Shirt\",\n\t\"type\": \"clothing\",\n\t\"condition\": \"used\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all merch for user 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59803a55-c08c-47fe-8c6a-8efac66a0c78",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[0][\"description\"]).to.eq(\"Metallica Shirt\");\r",
+							"    pm.expect(pm.response.json()[0][\"type\"]).to.eq(\"clothing\");\r",
+							"    pm.expect(pm.response.json()[0][\"condition\"]).to.eq(\"used\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/merch/\" + pm.response.json()[0][\"id\"];\r",
+							"    pm.expect(pm.response.json()[0][\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1bc6c3f-6f67-4b5d-ac6d-8713dc48684a",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"description\"]).to.eq(\"Metallica Shirt\");\r",
+							"    pm.expect(pm.response.json()[\"type\"]).to.eq(\"clothing\");\r",
+							"    pm.expect(pm.response.json()[\"condition\"]).to.eq(\"used\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/merch/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item - bad accept type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6b39180d-9f0e-46a4-9540-f681d8ea60f7",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(406);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Not Acceptable.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "image/svg+xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item wrong user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a415aaa9-0b25-4485-888b-f7b9d1631e0e",
+						"exec": [
+							"pm.test(\"403 status code\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Forbidden. You do not have access to this merch item.\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item bad token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "338e8b6e-8890-4748-a0b5-8ac0a04e418a",
+						"exec": [
+							"pm.test(\"401 status code\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Invalid Token.\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "badtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a specific merch item - patch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a22f2a32-6a4c-4e9d-9e12-8a744f2cd38e",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"description\"]).to.eq(\"Metallica Shirt\");\r",
+							"    pm.expect(pm.response.json()[\"type\"]).to.eq(\"clothing\");\r",
+							"    pm.expect(pm.response.json()[\"condition\"]).to.eq(\"new\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/merch/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"condition\": \"new\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a specific merch item - patch - wrong user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a7a2c2ad-0301-4d4a-bd37-ec10009a6760",
+						"exec": [
+							"pm.test(\"403 status code\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Forbidden. You do not have access to this merch item.\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"condition\": \"holy moly\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a specific merch item - patch - bad token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3129d1c4-1656-4e86-9856-7678f825edac",
+						"exec": [
+							"pm.test(\"401 status code\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Invalid Token.\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "badtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"condition\": \"holy moly\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a specific merch item - put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "53b614ec-1c9f-4188-97da-6401f66287b0",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"merch1_id\", pm.response.json()[\"id\"]);\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"description\"]).to.eq(\"Slayer CD\");\r",
+							"    pm.expect(pm.response.json()[\"type\"]).to.eq(\"music\");\r",
+							"    pm.expect(pm.response.json()[\"condition\"]).to.eq(\"like new\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/merch/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"condition\": \"like new\",\n\t\"description\": \"Slayer CD\",\n\t\"type\": \"music\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a specific merch item - put - wrong user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7a918438-5715-4b75-9652-a4fa0480e3df",
+						"exec": [
+							"pm.test(\"403 status code\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Forbidden. You do not have access to this merch item.\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"condition\": \"like new\",\n\t\"description\": \"Slayer CD\",\n\t\"type\": \"music\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a specific merch item - put - bad token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d01f8723-f1f1-4f9b-bcd7-ca06dd40b9ec",
+						"exec": [
+							"pm.test(\"401 status code\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"Error\"]).to.eq(\"Invalid Token.\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "badtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"condition\": \"like new\",\n\t\"description\": \"Slayer CD\",\n\t\"type\": \"music\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create band",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "066e7938-003f-4cfd-87bf-5b2a685cc612",
+						"exec": [
+							"pm.environment.set(\"band1_id\", pm.response.json()[\"id\"]);\r",
+							"\r",
+							"pm.test(\"201 status code\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Metallica\");\r",
+							"    pm.expect(pm.response.json()[\"genre\"]).to.eq(\"Thrash Metal\");\r",
+							"    pm.expect(pm.response.json()[\"country\"]).to.eq(\"United States of America\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bands/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Metallica\",\n\t\"genre\": \"Thrash Metal\",\n\t\"country\": \"United States of America\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bands",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all bands",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "27438eb9-a43f-4a32-81f2-f7fe01380b32",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[0][\"name\"]).to.eq(\"Metallica\");\r",
+							"    pm.expect(pm.response.json()[0][\"genre\"]).to.eq(\"Thrash Metal\");\r",
+							"    pm.expect(pm.response.json()[0][\"country\"]).to.eq(\"United States of America\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bands/\" + pm.response.json()[0][\"id\"];\r",
+							"    pm.expect(pm.response.json()[0][\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific band",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "23d2bc1a-abb3-4f61-b32e-b184bc486ee6",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Metallica\");\r",
+							"    pm.expect(pm.response.json()[\"genre\"]).to.eq(\"Thrash Metal\");\r",
+							"    pm.expect(pm.response.json()[\"country\"]).to.eq(\"United States of America\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bands/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a band - patch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4153c51b-38a5-43fa-b4c4-84f24f7dcc81",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Metallica\");\r",
+							"    pm.expect(pm.response.json()[\"genre\"]).to.eq(\"Heavy Metal\");\r",
+							"    pm.expect(pm.response.json()[\"country\"]).to.eq(\"United States of America\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bands/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"genre\": \"Heavy Metal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit a band - put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d5f5c9a6-2edc-4f9d-ba73-88b8397c7476",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.environment.unset(\"band1_id\");\r",
+							"    pm.environment.set(\"band1_id\", pm.response.json()[\"id\"]);\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Exodus\");\r",
+							"    pm.expect(pm.response.json()[\"genre\"]).to.eq(\"Thrash Metal\");\r",
+							"    pm.expect(pm.response.json()[\"country\"]).to.eq(\"United States of America\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bands/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"genre\": \"Thrash Metal\",\n\t\"country\": \"United States of America\",\n\t\"name\": \"Exodus\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign band to merch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "272d183e-6861-4a5f-b542-4bff4ca2490a",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:merch_id/bands/:band_id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":merch_id",
+						"bands",
+						":band_id"
+					],
+					"variable": [
+						{
+							"key": "merch_id",
+							"value": "{{merch1_id}}"
+						},
+						{
+							"key": "band_id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific band with merch item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dfd5efc6-b76a-4df6-8e36-c2de422b24aa",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"merch\"][0][\"id\"]).to.eq(pm.environment.get(\"merch1_id\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item with band",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0519e703-2b08-4b3e-b5b7-7d789e5ac11c",
+						"exec": [
+							"\r",
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"band\"][\"id\"]).to.eq(pm.environment.get(\"band1_id\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unassign merch item from band",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9a4a70f4-cc08-4f24-92cb-f5f49a11bf14",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:merch_id/bands/:band_id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":merch_id",
+						"bands",
+						":band_id"
+					],
+					"variable": [
+						{
+							"key": "merch_id",
+							"value": "{{merch1_id}}"
+						},
+						{
+							"key": "band_id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific band with merch item unassigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8e7bb38d-df31-4415-a5a0-f28416d1fc65",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"merch\"][0]).to.eq(undefined);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item with band unassigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b4401211-f3f6-4828-8656-590a8d6f929e",
+						"exec": [
+							"\r",
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"band\"]).to.eq(null);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign band to merch again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "25d512f3-da96-433c-b17f-9e973712da6d",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:merch_id/bands/:band_id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":merch_id",
+						"bands",
+						":band_id"
+					],
+					"variable": [
+						{
+							"key": "merch_id",
+							"value": "{{merch1_id}}"
+						},
+						{
+							"key": "band_id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a band",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e3f6e947-472e-43e4-8750-000b1b18f800",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create band 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f90952b-3bb1-4de5-82a3-5cf502e39c87",
+						"exec": [
+							"pm.environment.set(\"band2_id\", pm.response.json()[\"id\"]);\r",
+							"\r",
+							"pm.test(\"201 status code\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"name\"]).to.eq(\"Metallica\");\r",
+							"    pm.expect(pm.response.json()[\"genre\"]).to.eq(\"Thrash Metal\");\r",
+							"    pm.expect(pm.response.json()[\"country\"]).to.eq(\"United States of America\");\r",
+							"    const self_url = pm.environment.get(\"app_url\") + \"/bands/\" + pm.response.json()[\"id\"];\r",
+							"    pm.expect(pm.response.json()[\"self\"]).to.eq(self_url);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Metallica\",\n\t\"genre\": \"Thrash Metal\",\n\t\"country\": \"United States of America\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{app_url}}/bands",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific merch item with band deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5d9771d-f976-4fac-be87-81fdb0ff662f",
+						"exec": [
+							"\r",
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"band\"]).to.eq(null);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get deleted band",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "365bfc0d-cc8c-4330-a6f6-577eb8ea430c",
+						"exec": [
+							"pm.test(\"404 status code\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assign band 2 to merch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a21e572-fc71-43aa-95fe-ea98ab588a73",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:merch_id/bands/:band_id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":merch_id",
+						"bands",
+						":band_id"
+					],
+					"variable": [
+						{
+							"key": "merch_id",
+							"value": "{{merch1_id}}"
+						},
+						{
+							"key": "band_id",
+							"value": "{{band2_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a merch item - wrong user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "92d7c819-6fb8-4e41-908d-78a5f522a852",
+						"exec": [
+							"pm.test(\"403 status code\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt2}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a merch item - bad token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c095a5d2-1cd5-4b8b-86b9-9a2e962211d8",
+						"exec": [
+							"pm.test(\"401 status code\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "badtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a merch item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "01e69b9b-714b-465d-a934-07e80b3636b2",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a specific band with merch item deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f3c2284b-7b70-4785-9b5a-b5153e6bf905",
+						"exec": [
+							"pm.test(\"200 status code\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"content is valid\", function () {\r",
+							"    pm.expect(pm.response.json()[\"merch\"][0]).to.eq(undefined);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band2_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get deleted merch item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "47aad77a-5b15-420c-8fd9-8c71fcda2e5d",
+						"exec": [
+							"pm.test(\"404 status code\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/merch/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"merch",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{merch1_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a band 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a448ba7-2da1-4b76-8383-a43ba92c37f8",
+						"exec": [
+							"pm.test(\"204 status code\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/bands/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"bands",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{band2_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a user - not allowed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af56dc9f-498d-49dc-b5db-039533c90f9a",
+						"exec": [
+							"pm.test(\"405 status code\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{app_url}}/users/:id",
+					"host": [
+						"{{app_url}}"
+					],
+					"path": [
+						"users",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{user_id1}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
