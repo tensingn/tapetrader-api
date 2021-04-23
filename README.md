@@ -7,4 +7,5 @@ REST api for tape trader project
  
  ⋅⋅*Take note of the id_token upon login. This will be needed if you wish to perform any CRUD actions on merch items. 
  ⋅⋅*You can use username "test1@test.com" with password "test123!" if you do not wish to register your own email.
-4. Inside postman/ there are two files: a Postman collection and a Postman environment. Theses can be imported in Postman to thoroughly test the API.
+
+3. Inside postman/ there are two files: a Postman collection and a Postman environment. Theses can be imported in Postman to thoroughly test the API.
