@@ -3,7 +3,7 @@ REST api for tape trader project
 
 ### Where to start
 1. View docs.pdf for description and better understanding of API routes.
-2. Visit https://tape-trader-311601.uc.r.appspot.com/login to login or visit https://tape-trader-311601.uc.r.appspot.com/login/registration to register a user.
+2. Visit https://tape-trader-311601.uc.r.appspot.com/login to login or visit https://tape-trader-311601.uc.r.appspot.com/login/registration to register a user. (NOTE: These are the only two URLs that have a UI)
  
    - Take note of the id_token upon login. This will be needed if you wish to perform any CRUD actions on merch items. 
    - You can use username test1@test.com with password test123! if you do not wish to register your own email.
