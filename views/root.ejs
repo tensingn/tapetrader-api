@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>Welcome</title>
+
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+<div class="jumbotron">
+  <h1 class="display-4">WELCOME</h1>
+  <p class="lead">This is the Login page for the Final Project!</p>
+  <hr class="my-4">
+
+  <form action="/login" method="post">
+    <h4>LOGIN</h4>
+  	<label for="username">Username</label>
+  	<input type="text" placeholder="Enter Username" name="username" required>
+
+  	<label for="password">Password</label>
+  	<input type="password" placeholder="Enter Password" name="password" required> 
+
+  	<button class="btn btn-primary btn-md" type="submit">Login</button> 	
+  </form>
+
+  
+  <form action="/login/registration" method="get">
+    <button class="btn btn-primary btn-md" type="submit" >Register New User</button>   
+  </form>
+</div>
+
+
+
+</body>
