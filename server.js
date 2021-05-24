@@ -127,9 +127,15 @@ function delete_merch(id) {
 
 //BAND HELPER FUNCTIONS
 
-function post_band(name, genre, country) {
+function post_band(name, genre, country, imageURL) {
 	var key = datastore.key(BANDS);
-	const new_band = { name: name, genre: genre, country: country, merch: [] };
+	const new_band = {
+		name: name,
+		genre: genre,
+		country: country,
+		merch: [],
+		imageURL,
+	};
 	return datastore.save({ key: key, data: new_band }).then(() => {
 		return key;
 	});
@@ -541,7 +547,12 @@ app.post("/bands", function (req, res) {
 		return;
 	}
 
-	post_band(req.body.name, req.body.genre, req.body.country).then((key) => {
+	post_band(
+		req.body.name,
+		req.body.genre,
+		req.body.country,
+		req.body.imageURL
+	).then((key) => {
 		const band = get_band(key.id).then((band) => {
 			band[0]["self"] =
 				req.protocol + "://" + req.get("host") + req.originalUrl + "/" + key.id;
