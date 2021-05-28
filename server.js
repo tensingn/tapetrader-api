@@ -770,7 +770,12 @@ app.get("/login/registration", function (req, res) {
 	res.render("register.ejs");
 });
 
+app.get("/authorized", checkJwt, function (req, res) {
+	res.send("Secured Dog");
+});
+
 app.use(function (err, req, res, next) {
+	//console.log(err);
 	res.status(401).send({ Error: "Invalid Token." });
 });
 
