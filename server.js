@@ -78,7 +78,7 @@ function get_merch(id) {
 
 function get_all_merch(req, paginate) {
 	if (paginate) {
-		var q = datastore.createQuery(MERCH).limit(5);
+		var q = datastore.createQuery(MERCH).limit(9);
 		var results = {};
 		if (Object.keys(req.query).includes("cursor")) {
 			q = q.start(req.query.cursor);
