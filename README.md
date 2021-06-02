@@ -1,5 +1,5 @@
 # tapetrader-api
-REST API for tape trader project
+Node.js/Express REST API for tape trader project
 
 ### Where to start
 1. View docs.pdf for description and better understanding of API routes. (NOTE: The login and registration URLs in the docs are no longer in use. See Step 2 for correct URLs.)
