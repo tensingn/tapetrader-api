@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1b877a5f-f5ce-4bc9-9494-869f6241ffd1",
+		"_postman_id": "9eff4871-b3a0-4585-bf01-91844fb70920",
 		"name": "final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -128,7 +128,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"description\": \"Metallica Shirt\",\n\t\"type\": \"clothing\",\n\t\"condition\": \"used\"\n}",
+					"raw": "{\n\t\"description\": \"Metallica Shirt\",\n\t\"type\": \"clothing\",\n\t\"condition\": \"used\",\n    \"imageURL\": \"https://target.scene7.com/is/image/Target/GUEST_2b8f2c52-72f7-409b-bd72-1160d9c6d0c7?wid=488&hei=488&fmt=pjpeg\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -157,15 +157,7 @@
 							"pm.test(\"200 status code\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"\r",
-							"\r",
-							"pm.test(\"content is valid\", function () {\r",
-							"    pm.expect(pm.response.json()[0][\"description\"]).to.eq(\"Metallica Shirt\");\r",
-							"    pm.expect(pm.response.json()[0][\"type\"]).to.eq(\"clothing\");\r",
-							"    pm.expect(pm.response.json()[0][\"condition\"]).to.eq(\"used\");\r",
-							"    const self_url = pm.environment.get(\"app_url\") + \"/merch/\" + pm.response.json()[0][\"id\"];\r",
-							"    pm.expect(pm.response.json()[0][\"self\"]).to.eq(self_url);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -245,8 +237,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -309,8 +300,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -362,8 +352,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -415,8 +404,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -481,8 +469,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -543,8 +530,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -605,8 +591,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -672,8 +657,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -734,8 +718,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -796,8 +779,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -932,8 +914,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -988,8 +969,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1046,8 +1026,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1096,13 +1075,11 @@
 					"variable": [
 						{
 							"key": "merch_id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						},
 						{
 							"key": "band_id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1144,8 +1121,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1198,8 +1174,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1248,13 +1223,11 @@
 					"variable": [
 						{
 							"key": "merch_id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						},
 						{
 							"key": "band_id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1296,8 +1269,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1350,8 +1322,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1400,13 +1371,11 @@
 					"variable": [
 						{
 							"key": "merch_id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						},
 						{
 							"key": "band_id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1443,8 +1412,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1547,8 +1515,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1592,8 +1559,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band1_id}}",
-							"type": "string"
+							"value": "{{band1_id}}"
 						}
 					]
 				}
@@ -1642,13 +1608,11 @@
 					"variable": [
 						{
 							"key": "merch_id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						},
 						{
 							"key": "band_id",
-							"value": "{{band2_id}}",
-							"type": "string"
+							"value": "{{band2_id}}"
 						}
 					]
 				}
@@ -1695,8 +1659,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1743,8 +1706,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1791,8 +1753,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1834,8 +1795,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band2_id}}",
-							"type": "string"
+							"value": "{{band2_id}}"
 						}
 					]
 				}
@@ -1882,8 +1842,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{merch1_id}}",
-							"type": "string"
+							"value": "{{merch1_id}}"
 						}
 					]
 				}
@@ -1920,8 +1879,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{band2_id}}",
-							"type": "string"
+							"value": "{{band2_id}}"
 						}
 					]
 				}
@@ -1958,8 +1916,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "{{user_id1}}",
-							"type": "string"
+							"value": "{{user_id1}}"
 						}
 					]
 				}

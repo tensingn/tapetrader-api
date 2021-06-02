@@ -56,7 +56,7 @@ const checkJwt = jwt({
 
 //MERCH HELPER FUNCTIONS
 
-function post_merch(description, type, condition, user) {
+function post_merch(description, type, condition, user, imageURL) {
 	var key = datastore.key(MERCH);
 	const new_merch = {
 		description: description,
@@ -64,6 +64,7 @@ function post_merch(description, type, condition, user) {
 		condition: condition,
 		band: null,
 		user: user,
+		imageURL: imageURL,
 	};
 	return datastore.save({ key: key, data: new_merch }).then(() => {
 		return key;
@@ -107,7 +108,7 @@ function get_all_merch(req, paginate) {
 	}
 }
 
-function patch_merch(id, description, type, condition, band, user) {
+function patch_merch(id, description, type, condition, band, user, imageURL) {
 	var key = datastore.key([MERCH, parseInt(id, 10)]);
 	const merch = {
 		description: description,
@@ -115,6 +116,7 @@ function patch_merch(id, description, type, condition, band, user) {
 		condition: condition,
 		band: band,
 		user: user,
+		imageURL: imageURL,
 	};
 	return datastore.save({ key: key, data: merch }).then(() => {
 		return key;
@@ -261,7 +263,8 @@ app.post("/merch", checkJwt, function (req, res) {
 		req.body.description,
 		req.body.type,
 		req.body.condition,
-		req.user.name
+		req.user.name,
+		req.body.imageURL
 	).then((key) => {
 		const merch = get_merch(key.id).then((merch) => {
 			merch[0]["self"] =
@@ -296,7 +299,8 @@ app.patch("/merch/:id", checkJwt, function (req, res) {
 				req.body.type || prevmerch[0].type,
 				req.body.condition || prevmerch[0].condition,
 				req.body.band || prevmerch[0].band,
-				prevmerch[0].user
+				prevmerch[0].user,
+				prevmerch[0].imageURL
 			).then(() => {
 				//get newly updated merch to send back to client
 				const merch = get_merch(req.params.id).then((merch) => {
