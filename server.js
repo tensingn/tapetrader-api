@@ -108,6 +108,34 @@ function get_all_merch(req, paginate) {
 	}
 }
 
+function get_all_merch_all_users(req, paginate) {
+	if (paginate) {
+		var q = datastore.createQuery(MERCH).limit(9);
+		var results = {};
+		if (Object.keys(req.query).includes("cursor")) {
+			q = q.start(req.query.cursor);
+		}
+		return datastore.runQuery(q).then((entities) => {
+			results.items = entities[0].map(fromDatastore);
+			if (entities[1].moreResults !== Datastore.NO_MORE_RESULTS) {
+				results.next =
+					req.protocol +
+					"://" +
+					req.get("host") +
+					"/merch" +
+					"?cursor=" +
+					entities[1].endCursor;
+			}
+			return results;
+		});
+	} else {
+		var q = datastore.createQuery(MERCH);
+		return datastore.runQuery(q).then((entities) => {
+			return entities[0].map(fromDatastore);
+		});
+	}
+}
+
 function patch_merch(id, description, type, condition, band, user, imageURL) {
 	var key = datastore.key([MERCH, parseInt(id, 10)]);
 	const merch = {
@@ -214,14 +242,23 @@ function get_user(id) {
 
 //MERCH ROUTES
 app.get("/merch", checkJwt, function (req, res) {
-	//app.get("/merch", function (req, res) {
-	const merch = get_all_merch(req, true).then((merch) => {
-		merch.items.forEach((items) => {
-			items["self"] =
-				req.protocol + "://" + req.get("host") + "/merch/" + items["id"];
+	if (req.body.allUsers) {
+		const merch = get_all_merch_all_users(req, true).then((merch) => {
+			merch.items.forEach((items) => {
+				items["self"] =
+					req.protocol + "://" + req.get("host") + "/merch/" + items["id"];
+			});
+			res.status(200).json(merch.items);
 		});
-		res.status(200).json(merch.items);
-	});
+	} else {
+		const merch = get_all_merch(req, true).then((merch) => {
+			merch.items.forEach((items) => {
+				items["self"] =
+					req.protocol + "://" + req.get("host") + "/merch/" + items["id"];
+			});
+			res.status(200).json(merch.items);
+		});
+	}
 });
 
 app.get("/merch/:id", checkJwt, function (req, res) {
