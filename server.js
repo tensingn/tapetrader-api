@@ -56,13 +56,13 @@ const checkJwt = jwt({
 
 //MERCH HELPER FUNCTIONS
 
-function post_merch(description, type, condition, user, imageURL) {
+function post_merch(description, type, condition, user, imageURL, band) {
 	var key = datastore.key(MERCH);
 	const new_merch = {
 		description: description,
 		type: type,
 		condition: condition,
-		band: null,
+		band: band,
 		user: user,
 		imageURL: imageURL,
 	};
@@ -242,23 +242,15 @@ function get_user(id) {
 
 //MERCH ROUTES
 app.get("/merch", checkJwt, function (req, res) {
-	if (req.body.allUsers) {
-		const merch = get_all_merch_all_users(req, true).then((merch) => {
-			merch.items.forEach((items) => {
-				items["self"] =
-					req.protocol + "://" + req.get("host") + "/merch/" + items["id"];
-			});
-			res.status(200).json(merch.items);
-		});
-	} else {
+	const bands = get_all_bands(req, false).then((bands) => {
 		const merch = get_all_merch(req, true).then((merch) => {
 			merch.items.forEach((items) => {
 				items["self"] =
 					req.protocol + "://" + req.get("host") + "/merch/" + items["id"];
 			});
-			res.status(200).json(merch.items);
+			res.status(200).json({ merch: merch.items, bands });
 		});
-	}
+	});
 });
 
 app.get("/merch/:id", checkJwt, function (req, res) {
@@ -296,20 +288,67 @@ app.post("/merch", checkJwt, function (req, res) {
 		return;
 	}
 
-	post_merch(
-		req.body.description,
-		req.body.type,
-		req.body.condition,
-		req.user.name,
-		req.body.imageURL
-	).then((key) => {
-		const merch = get_merch(key.id).then((merch) => {
-			merch[0]["self"] =
-				req.protocol + "://" + req.get("host") + req.originalUrl + "/" + key.id;
-			merch[0]["id"] = key.id.toString(10);
-			res.status(201).send(merch[0]);
+	// get band
+	if (req.body.band) {
+		get_band(req.body.band).then((band) => {
+			band[0]["id"] = req.body.band;
+			// create merch
+			post_merch(
+				req.body.description,
+				req.body.type,
+				req.body.condition,
+				req.user.name,
+				req.body.imageURL,
+				band[0]
+			).then((key) => {
+				band[0]["merch"].push({
+					id: key.id,
+					self: req.protocol + "://" + req.get("host") + "/merch/" + key.id,
+				});
+				patch_band(
+					req.body.band,
+					band[0].name,
+					band[0].genre,
+					band[0].country,
+					band[0].merch
+				).then(() => {
+					const merch = get_merch(key.id).then((merch) => {
+						merch[0]["self"] =
+							req.protocol +
+							"://" +
+							req.get("host") +
+							req.originalUrl +
+							"/" +
+							key.id;
+						merch[0]["id"] = key.id.toString(10);
+						res.status(201).send(merch[0]);
+					});
+				});
+			});
 		});
-	});
+	} else {
+		// create merch
+		post_merch(
+			req.body.description,
+			req.body.type,
+			req.body.condition,
+			req.user.name,
+			req.body.imageURL,
+			null
+		).then((key) => {
+			const merch = get_merch(key.id).then((merch) => {
+				merch[0]["self"] =
+					req.protocol +
+					"://" +
+					req.get("host") +
+					req.originalUrl +
+					"/" +
+					key.id;
+				merch[0]["id"] = key.id.toString(10);
+				res.status(201).send(merch[0]);
+			});
+		});
+	}
 });
 
 app.patch("/merch/:id", checkJwt, function (req, res) {
@@ -337,7 +376,7 @@ app.patch("/merch/:id", checkJwt, function (req, res) {
 				req.body.condition || prevmerch[0].condition,
 				req.body.band || prevmerch[0].band,
 				prevmerch[0].user,
-				prevmerch[0].imageURL
+				req.body.imageURL || prevmerch[0].imageURL
 			).then(() => {
 				//get newly updated merch to send back to client
 				const merch = get_merch(req.params.id).then((merch) => {
@@ -700,7 +739,6 @@ app.delete("/bands/:id", function (req, res) {
 			.send({ Error: "Content type not supported by the endpoint" });
 		return;
 	}
-
 	const band = get_band(req.params.id).then((band) => {
 		if (typeof band[0] !== "undefined") {
 			for (var i = 0; i < band[0].merch.length; i++) {
@@ -721,6 +759,7 @@ app.delete("/bands/:id", function (req, res) {
 			delete_band(req.params.id).then(res.status(204).end());
 			return;
 		} else {
+			console.log(band);
 			res.status(404).send({ Error: "No band with this ID exists." });
 		}
 	});
@@ -816,6 +855,7 @@ app.get("/authorized", checkJwt, function (req, res) {
 });
 
 app.use(function (err, req, res, next) {
+	console.log(err);
 	//console.log(err);
 	res.status(401).send({ Error: "Invalid Token." });
 });
