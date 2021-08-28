@@ -316,7 +316,8 @@ app.post("/merch", checkJwt, function (req, res) {
 					band[0].name,
 					band[0].genre,
 					band[0].country,
-					band[0].merch
+					band[0].merch,
+					band[0].imageURL
 				).then(() => {
 					const merch = get_merch(key.id).then((merch) => {
 						merch[0]["self"] =
@@ -592,9 +593,10 @@ app.delete("/merch/:merch_id/bands/:band_id", checkJwt, function (req, res) {
 				req.params.merch_id,
 				prevmerch[0].description,
 				prevmerch[0].type,
-				req.params.condition,
+				prevmerch[0].condition,
 				null,
-				req.user.name
+				req.user.name,
+				prevmerch[0].imageURL
 			).then(() => {
 				// reqband[0]["merch"].push({
 				//     "id": req.params.merch_id,
@@ -760,7 +762,8 @@ app.delete("/bands/:id", function (req, res) {
 						merch[0].type,
 						merch[0].condition,
 						null,
-						merch[0].user
+						merch[0].user,
+						merch[0].imageURL
 					).then(() => {});
 				});
 			}
