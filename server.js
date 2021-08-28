@@ -205,9 +205,15 @@ function get_all_bands(req, paginate) {
 	}
 }
 
-function patch_band(id, name, genre, country, merch) {
+function patch_band(id, name, genre, country, merch, imageURL) {
 	const key = datastore.key([BANDS, parseInt(id, 10)]);
-	const band = { name: name, genre: genre, country: country, merch: merch };
+	const band = {
+		name: name,
+		genre: genre,
+		country: country,
+		merch: merch,
+		imageURL: imageURL,
+	};
 	return datastore.save({ key: key, data: band });
 }
 
@@ -461,7 +467,8 @@ app.delete("/merch/:id", checkJwt, function (req, res) {
 							band[0].name,
 							band[0].genre,
 							band[0].country,
-							band[0].merch
+							band[0].merch,
+							band[0].imageURL
 						).then(() => {
 							delete_merch(req.params.id).then(res.status(204).end());
 							return;
@@ -513,9 +520,9 @@ app.put("/merch/:merch_id/bands/:band_id", checkJwt, function (req, res) {
 			//(id, description, type, condition, band, user){
 			patch_merch(
 				req.params.merch_id,
-				prevmerch[0].description,
-				prevmerch[0].type,
-				req.params.condition,
+				req.body.description,
+				req.body.type,
+				req.body.condition,
 				{
 					id: req.params.band_id,
 					name: reqband[0]["name"],
@@ -526,7 +533,8 @@ app.put("/merch/:merch_id/bands/:band_id", checkJwt, function (req, res) {
 						"/bands/" +
 						req.params.band_id,
 				},
-				req.user.name
+				req.user.name,
+				req.body.imageURL
 			).then(() => {
 				reqband[0]["merch"].push({
 					id: req.params.merch_id,
@@ -543,7 +551,8 @@ app.put("/merch/:merch_id/bands/:band_id", checkJwt, function (req, res) {
 					reqband[0]["name"],
 					reqband[0]["genre"],
 					reqband[0]["country"],
-					reqband[0]["merch"]
+					reqband[0]["merch"],
+					reqband[0]["imageURL"]
 				).then(() => {
 					res.status(204).end();
 					return;
