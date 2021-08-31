@@ -697,7 +697,8 @@ app.patch("/bands/:id", function (req, res) {
 			req.body.name || prevband[0].name,
 			req.body.genre || prevband[0].genre,
 			req.body.country || prevband[0].country,
-			prevband[0].merch
+			prevband[0].merch,
+			req.body.imageURL || prevband[0].imageURL
 		).then(() => {
 			//get newly updated band to send back to client
 			const band = get_band(req.params.id).then((band) => {
