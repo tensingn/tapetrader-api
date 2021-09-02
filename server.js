@@ -246,6 +246,24 @@ function get_user(id) {
 
 /* ------------- Begin Route Functions ------------- */
 
+app.get(
+	"/merch/all",
+	checkJwt.unless({
+		method: function (req) {
+			console.log(req);
+			return false;
+		},
+	}),
+	function (req, res) {
+		const merch = get_all_merch_all_users(req, true).then((merch) => {
+			merch.items.forEach((items) => {
+				items["self"] =
+					req.protocol + "://" + req.get("host") + "/merch/" + items["id"];
+			});
+			res.status(200).json({ merch: merch.items });
+		});
+	}
+);
 //MERCH ROUTES
 app.get("/merch", checkJwt, function (req, res) {
 	const bands = get_all_bands(req, false).then((bands) => {
