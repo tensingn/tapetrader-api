@@ -250,7 +250,6 @@ app.get(
 	"/merch/all",
 	checkJwt.unless({
 		method: function (req) {
-			console.log(req);
 			return false;
 		},
 	}),
